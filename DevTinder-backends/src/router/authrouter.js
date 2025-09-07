@@ -11,8 +11,6 @@ const {userauth} = require("../middleware.js/userauth")
 authrouter.use(cookieparser())
 authrouter.use(express.json())
 
-//SignUp API
-//SignUp API
 authrouter.post("/signup", async (req,res)=>{
     //validation of data
     try{
@@ -40,7 +38,7 @@ authrouter.post("/login",async (req,res)=>{
         if(!user){
             throw new Error("User not available");
         }
-        const isPassValid = bcrypt.compare(password,user.password);
+        const isPassValid = await bcrypt.compare(password,user.password);
 
         if(isPassValid){
             const token = jwt.sign({_id: user._id},"@omdon",{expiresIn : "1d"})
@@ -56,9 +54,13 @@ authrouter.post("/login",async (req,res)=>{
 })
 
 authrouter.post("/logout", async (req, res) => {
+    try{
         res.cookie("token", null, { expires: new Date(Date.now()) });
         res.send("LogOut Successful");
-
+    }
+    catch(err){
+        res.status(500).send("Error Occured" + err);
+    }
 });
 
 
