@@ -1,6 +1,6 @@
 const express = require("express");
 
-const router = express.Router();
+const authrouter = express.Router();
 const {validatesignupdata,validateloginupdata} = require("../utils/validation")
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -8,12 +8,12 @@ const cookieparser = require("cookie-parser");
 const User = require("../models/User")
 const {userauth} = require("../middleware.js/userauth")
 
-router.use(cookieparser())
-router.use(express.json())
+authrouter.use(cookieparser())
+authrouter.use(express.json())
 
 //SignUp API
 //SignUp API
-router.post("/signup", async (req,res)=>{
+authrouter.post("/signup", async (req,res)=>{
     //validation of data
     try{
     validatesignupdata(req);
@@ -32,7 +32,7 @@ router.post("/signup", async (req,res)=>{
         console.log(`/signup :${err}`)
     }    
 })
-router.post("/login",async (req,res)=>{
+authrouter.post("/login",async (req,res)=>{
     try{
         validateloginupdata(req);
         const {emailid,password} = req.body;
@@ -55,14 +55,12 @@ router.post("/login",async (req,res)=>{
     }
 })
 
-router.get("/profile",userauth,async(req,res)=>{
-    try{
-    res.send("hello");
-    }
-    catch(err){
-        console.log(`Error : ${err}`);
-        res.status(500).send("Internal Server Error");
-    }
-})
+authrouter.post("/logout", async (req, res) => {
+        res.cookie("token", null, { expires: new Date(Date.now()) });
+        res.send("LogOut Successful");
 
-module.exports = router;
+});
+
+
+
+module.exports = authrouter;

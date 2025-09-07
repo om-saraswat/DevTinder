@@ -14,7 +14,12 @@ app.use(express.json())
 
 
 const authrouter = require("./router/authrouter");
+const profilerouter = require("./router/profile");
+const requestrouter = require("./router/request");
 app.use("/",authrouter);
+app.use("/",profilerouter);
+app.use("/",requestrouter); 
+
 
 connectdb().then(()=>{
     console.log("dadtabase connected")
