@@ -47,4 +47,36 @@ const validateloginupdata = (data) => {
   return true; // validation passed
 };
 
-module.exports = { validatesignupdata,validateloginupdata };
+const validateprofileeditdata = (data) => {
+  try{
+    const {firstname, lastname,password,age,gender,photoUrl,about,skills} = data.body;
+    if(firstname){
+        if (firstname.length < 2 || firstname.length > 19) {
+            throw new Error("First name must be between 2 and 19 characters");
+        }
+    }
+    if(lastname){
+        if (lastname.length < 2 || lastname.length > 19) {
+            throw new Error("Last name must be between 2 and 19 characters");
+        }
+    }
+    if(age){
+        if(age < 18){
+            throw new Error("Age must be greater than 18");
+        }
+      }
+    
+
+  }
+  catch(err){
+    throw new Error(err);
+  }
+}
+const validPassword = (password) =>{
+  if(password){
+        if (!validator.isStrongPassword(password)) {
+            throw new Error("Password is not strong enough");
+        }
+  }
+}
+module.exports = { validatesignupdata,validateloginupdata,validateprofileeditdata,validPassword };

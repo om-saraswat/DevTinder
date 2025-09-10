@@ -41,7 +41,11 @@ const user = mongoose.model("user",mongoose.Schema({
     },
     photoUrl: {
         type : String,
-
+        validate(input){
+            if(input && !validator.isURL(input)){
+                throw new Error("Photo URL is not valid");
+            }
+        }
     },
     about : {
         type : String,
