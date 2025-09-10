@@ -21,7 +21,6 @@ connectdb().then(()=>{
     app.listen(7777,()=>{
         console.log("I am listing brother")
     })
-}).catch((err)=>{
-    
+}).catch((err)=>{ 
     console.log(`database error : ${err}`);
 });
